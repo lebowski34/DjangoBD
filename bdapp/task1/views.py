@@ -5,6 +5,13 @@ from django.views.generic import TemplateView
 from .forms import UserRegister
 from .models import *
 
+def paginated_posts(request):
+    posts = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "posts.html", {'page_obj': page_obj})
 
 def sign_up_by_django(request):
     buyers = Buyer.objects.values_list("name", flat=1)

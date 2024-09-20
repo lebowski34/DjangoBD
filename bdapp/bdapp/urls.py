@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from task1.views import *
+from task1.views import paginated_posts
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('platform/', platform_temp.as_view()),
+    path('posts/', paginated_posts, name='paginated_posts'),
     path('platform/games/', games_temp.as_view()),
     path('platform/cart/', cart_temp.as_view()),
-    path('', menu.as_view(template_name="fourth_task/menu.html")),
+    path('', menu.as_view(template_name="menu.html")),
     path('registration/', sign_up_by_django),
 ]

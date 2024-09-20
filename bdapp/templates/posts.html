@@ -1,0 +1,54 @@
+<!-- bdapp/templates/posts.html -->
+{% extends 'menu.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+{% block content %}
+<h1>Посты</h1>
+<div class="row">
+    {% for post in page_obj %}
+    <div class="col-md-4">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+        <p>{{ post.created_at }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+            </li>
+        {% endif %}
+        {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+                <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<form method="get">
+    <label for="page_size">Количество элементов на странице:</label>
+    <select name="page_size" onchange="this.form.submit()">
+        <option value="5" {% if request.GET.page_size == '5' %}selected{% endif %}>5</option>
+        <option value="10" {% if request.GET.page_size == '10' %}selected{% endif %}>10</option>
+        <option value="20" {% if request.GET.page_size == '20' %}selected{% endif %}>20</option>
+    </select>
+</form>
+
+{% endblock content %}
+</body>
+</html>
